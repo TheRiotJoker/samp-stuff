@@ -1,0 +1,14 @@
+{
+	"user": "TheRiotJoker",
+	"repo": "samp-stuff",
+	"tag": "0.0.1",
+	"entry": "gamemodes\\bare.pwn",
+	"output": "gamemodes/gamemodes\\bare.amx",
+	"dependencies": [
+		"pawn-lang/samp-stdlib"
+	],
+	"local": true,
+	"runtime": {
+		"mode": "y_testing"
+	}
+}

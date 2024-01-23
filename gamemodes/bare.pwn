@@ -2,6 +2,25 @@
 #include <core>
 #include <float>
 
+//-----------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------CONSTANTS----------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------
+
+#define NAME_MAXLEN 128
+#define STR_MAXLEN 256
+
+//-----------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------COLORS-------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------
+#define RED 0xFF0000FF
+#define GREEN 0x00FF00FF
+#define BLUE 0x0000FFFF
+#define YELLOW 0xFFFF00FF
+#define ORANGE 0xFFA500FF
+#define PURPLE 0x800080FF
+#define WHITE 0xFFFFFFFF
+#define BLACK 0x000000FF
+
 #pragma tabsize 0
 
 main()
@@ -13,7 +32,12 @@ main()
 
 public OnPlayerConnect(playerid)
 {
+	new playerName[NAME_MAXLEN];
+	GetPlayerName(playerid, playerName, sizeof(playerName));
 	GameTextForPlayer(playerid,"~w~SA-MP: ~r~Bare Script",5000,5);
+	new messageForAll[STR_MAXLEN];
+	format(messageForAll, sizeof(messageForAll), "%s has connected to the server. ", playerName);
+	SendClientMessageToAll(GREEN, messageForAll);
 	return 1;
 }
 
@@ -24,8 +48,18 @@ public OnPlayerCommandText(playerid, cmdtext[])
 	
 	cmd = strtok(cmdtext, idx);
 
-	if(strcmp(cmd, "/yadayada", true) == 0) {
-    	return 1;
+	if(strcmp(cmd, "/coords", true) == 0) {
+		new Float: x, Float: y, Float: z;
+		GetPlayerPos(playerid, x, y, z);
+		new message[STR_MAXLEN];
+		format(message, sizeof(message), "Your coordinates are: X: %f, Y: %f, Z: %f", x, y, z);
+		SendClientMessage(playerid, WHITE, message);
+		printf("Player %d requested coordinates, these were: X: %f, Y: %f, Z: %f", playerid, x, y, z);
+		return 1;
+	}
+
+	if(strcmp(cmd, "/car", true) == 0) {
+
 	}
 
 	return 0;
