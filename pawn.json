@@ -3,7 +3,7 @@
 	"repo": "samp-stuff",
 	"tag": "0.0.1",
 	"entry": "gamemodes\\bare.pwn",
-	"output": "gamemodes/gamemodes\\bare.amx",
+	"output": "gamemodes\\bare.amx",
 	"dependencies": [
 		"pawn-lang/samp-stdlib"
 	],
