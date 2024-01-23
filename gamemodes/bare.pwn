@@ -27,6 +27,7 @@ main()
 {
 	print("\n----------------------------------");
 	print("  Bare Script\n");
+	print("  \n");
 	print("----------------------------------\n");
 }
 
@@ -40,7 +41,6 @@ public OnPlayerConnect(playerid)
 	SendClientMessageToAll(GREEN, messageForAll);
 	return 1;
 }
-
 public OnPlayerCommandText(playerid, cmdtext[])
 {
 	new idx;
@@ -59,7 +59,13 @@ public OnPlayerCommandText(playerid, cmdtext[])
 	}
 
 	if(strcmp(cmd, "/car", true) == 0) {
-
+		//create buffalo at player position
+		new Float: x, Float: y, Float: z;
+		GetPlayerPos(playerid, x, y, z);
+		//what are the last 4 parameters? they are: Float: angle, color1, color2, respawn_delay
+		//the id of green color is: 0x00FF00FF
+		CreateVehicle(402, x, y, z, 0.0, 16, 151, 0);
+		return 1;
 	}
 
 	return 0;
