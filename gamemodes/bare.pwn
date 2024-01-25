@@ -9,17 +9,19 @@
 #define NAME_MAXLEN 128
 #define STR_MAXLEN 256
 #define STR_MAXLEN_BIG 4096
-#define MAX_COMMANDS 3
+#define CMD_COUNT 3
 
-new COMMANDS[MAX_COMMANDS][STR_MAXLEN] = {
+static const COMMANDS[][] = {
     "/coords",
     "/car",
-    "/help"
+    "/help",
+	"/fixcar"
 };
 
 #define COORDS 0
 #define CAR 1
 #define HELP 2
+#define FIXCAR 3
 
 
 //-----------------------------------------------------------------------------------------------------------------
@@ -72,22 +74,33 @@ public OnPlayerCommandText(playerid, cmdtext[])
 	}
 
 	if(strcmp(cmd, COMMANDS[CAR], true) == 0) {
-		//create buffalo at player position
-		new Float: x, Float: y, Float: z;
+		new Float: x, Float: y, Float: z, Float: a;
 		GetPlayerPos(playerid, x, y, z);
-		CreateVehicle(402, x, y+10, z, 0.0, 16, 151, 0);
+		//spawn vehicle in front of player
+		GetPlayerFacingAngle(playerid, a);
+		CreateVehicle(402,x + 2*floatcos(90+a, degrees), y+ 2*floatsin(90-a, degrees), z, 0.0, 16, 151, 0);
 		return 1;
 	}
 
 	if(strcmp(cmd, COMMANDS[HELP], true) == 0) {
 		new message[512];
 		format(message, sizeof(message), "Available commands: ");
-		for(new i = 0; i < MAX_COMMANDS; i++) {
+		for(new i = 0; i < CMD_COUNT; i++) {
 			strcat(message, "\n");
 			strcat(message, COMMANDS[i]);
 		}
 		SendClientMessage(playerid, WHITE, message);
 		return 1;
+	}
+
+	if(strcmp(cmd, COMMANDS[FIXCAR], true) == 0) {
+		if(!IsPlayerInAnyVehicle(playerid)) {
+			SendClientMessage(playerid, RED, "You are not in a vehicle.");
+			return 1;
+		}
+		new vehicleid = GetPlayerVehicleID(playerid);
+		RepairVehicle(vehicleid);
+		SendClientMessage(playerid, GREEN, "Your vehicle has been repaired.");
 	}
 
 	return 0;
