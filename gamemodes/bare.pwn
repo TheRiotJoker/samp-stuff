@@ -1,6 +1,8 @@
 #include <a_samp>
 #include <core>
 #include <float>
+#include <sscanf2>
+#include "vehiclehelpers"
 
 //-----------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------CONSTANTS----------------------------------------------------
@@ -44,6 +46,9 @@ main()
 	print("  Bare Script\n");
 	print(" beener 1 2 3 4 5 6 \n");
 	print("----------------------------------\n");
+	new commandText[] = "/car 50";
+	OnPlayerCommandText(0, commandText);
+
 }
 
 public OnPlayerConnect(playerid)
@@ -59,7 +64,7 @@ public OnPlayerConnect(playerid)
 public OnPlayerCommandText(playerid, cmdtext[])
 {
 	new idx;
-	new cmd[256];
+	new cmd[STR_MAXLEN];
 	
 	cmd = strtok(cmdtext, idx);
 
@@ -74,11 +79,27 @@ public OnPlayerCommandText(playerid, cmdtext[])
 	}
 
 	if(strcmp(cmd, COMMANDS[CAR], true) == 0) {
+		new vehicleid;
+		//extract command and vehicleid from cmdtext
+		sscanf(cmdtext, "s[256]i", cmd, vehicleid);
+		//check if vehicleid is valid
+		if(!isVehicleIdValid(vehicleid)){
+			new message[STR_MAXLEN];
+			format(message, sizeof(message), "Invalid vehicle id: %d", vehicleid);
+			SendClientMessage(playerid, RED, message);
+			return 1;
+		}
+
 		new Float: x, Float: y, Float: z, Float: a;
 		GetPlayerPos(playerid, x, y, z);
-		//spawn vehicle in front of player
+		new message[STR_MAXLEN];
+		new vehicleName[STR_MAXLEN];
+		GetVehicleName(vehicleid, vehicleName, sizeof(vehicleName));
+		format(message, sizeof(message), "You have spawned a %s", vehicleName);
+		SendClientMessage(playerid, GREEN, message);
+
 		GetPlayerFacingAngle(playerid, a);
-		CreateVehicle(402,x + 2*floatcos(90+a, degrees), y+ 2*floatsin(90-a, degrees), z, 0.0, 16, 151, 0);
+		CreateVehicle(vehicleid,x + 2*floatcos(90+a, degrees), y+ 2*floatsin(90-a, degrees), z, 0.0, 16, 151, 0);
 		return 1;
 	}
 
@@ -101,7 +122,9 @@ public OnPlayerCommandText(playerid, cmdtext[])
 		new vehicleid = GetPlayerVehicleID(playerid);
 		RepairVehicle(vehicleid);
 		SendClientMessage(playerid, GREEN, "Your vehicle has been repaired.");
+		return 1;
 	}
+
 
 	return 0;
 }
