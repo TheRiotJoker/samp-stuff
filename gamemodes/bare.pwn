@@ -2,7 +2,7 @@
 #include <core>
 #include <float>
 #include <sscanf2>
-#include <vehiclehelpers>
+#include "vehiclehelpers"
 
 //-----------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------CONSTANTS----------------------------------------------------
@@ -83,16 +83,19 @@ public OnPlayerCommandText(playerid, cmdtext[])
 		//extract command and vehicleid from cmdtext
 		sscanf(cmdtext, "s[256]i", cmd, vehicleid);
 		//check if vehicleid is valid
-		if(vehicleid < 400 && vehicleid > 611) {
+		if(!isVehicleIdValid(vehicleid)){
 			new message[STR_MAXLEN];
 			format(message, sizeof(message), "Invalid vehicle id: %d", vehicleid);
 			SendClientMessage(playerid, RED, message);
 			return 1;
 		}
+
 		new Float: x, Float: y, Float: z, Float: a;
 		GetPlayerPos(playerid, x, y, z);
 		new message[STR_MAXLEN];
-		format(message, sizeof(message), "You have spawned vehicle with id: %d", vehicleid);
+		new vehicleName[STR_MAXLEN];
+		GetVehicleName(vehicleid, vehicleName, sizeof(vehicleName));
+		format(message, sizeof(message), "You have spawned a %s", vehicleName);
 		SendClientMessage(playerid, GREEN, message);
 
 		GetPlayerFacingAngle(playerid, a);
