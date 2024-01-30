@@ -44,11 +44,7 @@ main()
 {
 	print("\n----------------------------------");
 	print("  Bare Script\n");
-	print(" beener 1 2 3 4 5 6 \n");
 	print("----------------------------------\n");
-	new commandText[] = "/car 50";
-	OnPlayerCommandText(0, commandText);
-
 }
 
 public OnPlayerConnect(playerid)
@@ -74,7 +70,11 @@ public OnPlayerCommandText(playerid, cmdtext[])
 		new message[STR_MAXLEN];
 		format(message, sizeof(message), "Your coordinates are: X: %f, Y: %f, Z: %f", x, y, z);
 		SendClientMessage(playerid, WHITE, message);
-		printf("Player %d requested coordinates, these were: X: %f, Y: %f, Z: %f", playerid, x, y, z);
+		printf("Player %d requested coordinates, they were: X: %f, Y: %f, Z: %f", playerid, x, y, z);
+		GetPlayerCameraPos(playerid, x, y, z);
+		format(message, sizeof(message), "Your camera coordinates are: X: %f, Y: %f, Z: %f", x, y, z);
+		printf("Player %d requested camera coordinates, they were: X: %f, Y: %f, Z: %f", playerid, x, y, z);
+		SendClientMessage(playerid, WHITE, message);
 		return 1;
 	}
 
@@ -144,10 +144,10 @@ public OnPlayerDeath(playerid, killerid, reason)
 SetupPlayerForClassSelection(playerid)
 {
  	SetPlayerInterior(playerid,0);
-	SetPlayerPos(playerid,2510.380615,-1670.454101,13.410902);
-	SetPlayerFacingAngle(playerid, 270.0);
-	SetPlayerCameraPos(playerid, 2513.380615, -1672.454101, 14.410902);
-	SetPlayerCameraLookAt(playerid, 2510.380615,-1670.454101,13.410902);
+	SetPlayerPos(playerid,2523.078125,-1679.134643, 15.496999);
+	SetPlayerFacingAngle(playerid, 90.0);
+	SetPlayerCameraPos(playerid,  2518.087402, -1676.866088, 15.856399);
+	SetPlayerCameraLookAt(playerid, 2523.078125,-1679.134643, 15.496999);
 }
 
 public OnPlayerRequestClass(playerid, classid)
@@ -162,8 +162,15 @@ public OnGameModeInit()
 	ShowPlayerMarkers(1);
 	ShowNameTags(1);
 	AllowAdminTeleport(1);
-	AddPlayerClass(270,2510.380615,-1670.454101,13.410902,270.1425,0,0,0,0,-1,-1);
+	//all grove street skin ids, including the main characters:
 
+	AddPlayerClass(270,2523.078125,-1679.134643, 15.496999,90.0,0,0,0,0,-1,-1);
+	AddPlayerClass(149,2523.078125,-1679.134643, 15.496999,90.0,0,0,0,0,-1,-1);
+	AddPlayerClass(271,2523.078125,-1679.134643, 15.496999,90.0,0,0,0,0,-1,-1);
+	AddPlayerClass(105,2523.078125,-1679.134643, 15.496999,90.0,0,0,0,0,-1,-1);
+	AddPlayerClass(6,2523.078125,-1679.134643, 15.496999,90.0,0,0,0,0,-1,-1);
+	AddPlayerClass(106,2523.078125,-1679.134643, 15.496999,90.0,0,0,0,0,-1,-1);
+	AddPlayerClass(107,2523.078125,-1679.134643, 15.496999,90.0,0,0,0,0,-1,-1);
 	return 1;
 }
 
